@@ -1,24 +1,35 @@
-import logo from './logo.svg';
-import './App.css';
+import { Container, Grid } from "@mui/material";
+import "./App.css";
+import FeaturedPost from "./components/FeaturedPost";
+import Header from "./components/Header";
+import PostCard from "./components/PostCard";
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
+import { featuredPosts } from "./data/Data";
+
+const darkTheme = createTheme({
+  palette: {
+    mode: 'dark',
+  },
+});
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ThemeProvider theme={darkTheme}>
+      <CssBaseline />
+        <Container>
+          <Header />
+          <FeaturedPost />
+          <br />
+          <Grid container spacing={4}>
+            {
+              featuredPosts.map((post) => (
+                <PostCard post={post} key={post.title} />
+              ))
+            }
+          </Grid>
+        </Container>
+    </ThemeProvider>
   );
 }
 
