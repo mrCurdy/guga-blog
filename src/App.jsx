@@ -1,6 +1,6 @@
 import React from "react";
 import UploadForm from "./UploadForm/UploadForm";
-import FileList from "../FileList/FileList";
+import FileList from "./FileList/FileList";
 
 function App() {
   return (
