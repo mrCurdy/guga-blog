@@ -3,7 +3,7 @@ import axios from "axios";
 import { ListGroup, Stack } from "react-bootstrap";
 // import port from '../constants.js';
 
-const FileList = () => {
+const FileList = ({ refreshTrigger }) => {
   const [files, setFiles] = useState([]);
 
   useEffect(() => {
@@ -18,10 +18,11 @@ const FileList = () => {
     };
 
     fetchFiles();
-  }, []);
+  }, [refreshTrigger]);
 
   return (
-    <Stack gap={2} className="col-md-5 mx-auto mt-2">
+    <Stack gap={2} className="col-md-5 mx-auto mt-5">
+      <h2 className="text-center">Available for download</h2>
       <ListGroup>
         {files.length > 0 ? (
           files.map((file, index) => (

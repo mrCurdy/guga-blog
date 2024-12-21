@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import axios from "axios";
 import Button from "react-bootstrap/Button";
 import Stack from "react-bootstrap/Stack";
@@ -6,9 +6,10 @@ import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
 import Alert from "react-bootstrap/Alert"; // Add missing Alert import
 
-function UploadForm() {
+function UploadForm({ onFileUpload }) {
   const [file, setFile] = useState(null);
   const [uploadStatus, setUploadStatus] = useState(null);
+  const fileInputRef = useRef(null);
 
   // Handle file selection
   const handleFileChange = (e) => {
@@ -26,7 +27,6 @@ function UploadForm() {
       });
       return;
     }
-
     const formData = new FormData();
     formData.append("file", file);
 
@@ -45,6 +45,9 @@ function UploadForm() {
         message: `File "${file.name}" uploaded successfully.`,
       });
       setFile(null); // Clear the file input
+      if (fileInputRef.current) {
+        fileInputRef.current.value = ""; // Reset inputField
+      }
     } catch (error) {
       console.error("Error uploading file:", error);
       setUploadStatus({
@@ -52,6 +55,7 @@ function UploadForm() {
         message: "Failed to upload file. Please try again.",
       });
     }
+    onFileUpload();
   };
 
   return (
@@ -60,14 +64,18 @@ function UploadForm() {
         <Stack gap={2} className="col-md-5 mx-auto">
           <h1 className="text-center">Welcome to AirBox</h1>
           <InputGroup className="mb-5">
-            <Form.Control type="file" onChange={handleFileChange} />
+            <Form.Control
+              type="file"
+              onChange={handleFileChange}
+              ref={fileInputRef}
+            />
           </InputGroup>
           <Button variant="secondary" type="submit">
             Upload
           </Button>
-          <Button variant="outline-secondary" type="button">
+          {/* <Button variant="outline-secondary" type="button">
             Back
-          </Button>
+          </Button> */}
         </Stack>
       </Form>
       {uploadStatus && (
